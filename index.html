@@ -3,78 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Axeon Nexus | Premium Portal</title>
+    <title>Axeon Data | Nigeria VTU</title>
     <style>
         :root {
-            --primary: #00f2ff; /* Cyber Blue */
-            --bg: #0a0b10;
-            --glass: rgba(255, 255, 255, 0.05);
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --primary: #00ff88; /* Fintech Green */
+            --text-main: #ffffff;
+            --text-muted: #8b949e;
         }
-        body {
-            background: var(--bg);
-            color: white;
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; padding: 20px; }
+        
+        .container { width: 100%; max-width: 500px; display: none; }
+        .active-view { display: block; }
+
+        /* Strong, Beautiful Boxes */
+        .box {
+            background: var(--card-bg);
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); /* Strong shadow */
+            transition: transform 0.2s, border-color 0.2s;
         }
-        .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 40px;
-            margin-top: 50px;
-            width: 80%;
-            max-width: 800px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-        }
-        h1 { font-size: 3rem; letter-spacing: 5px; color: var(--primary); text-transform: uppercase; }
-        .admin-section {
-            margin-top: 50px;
-            border-top: 1px dashed var(--primary);
-            padding-top: 20px;
-            display: none; /* Hidden by default */
-        }
-        .btn {
-            background: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 10px 25px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .btn:hover { background: var(--primary); color: black; }
+        .clickable { cursor: pointer; }
+        .clickable:hover { transform: translateY(-3px); border-color: var(--primary); }
+        
+        h1, h2, h3 { color: var(--text-main); margin-bottom: 10px; }
+        p { color: var(--text-muted); font-size: 14px; margin-bottom: 15px; }
+        
+        /* Inputs & Buttons */
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #30363d; background: #0d1117; color: white; outline: none; }
+        input:focus { border-color: var(--primary); }
+        
+        .btn { width: 100%; padding: 14px; background: var(--primary); color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px; }
+        .btn:hover { background: #00cc6a; }
+        .btn-outline { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); margin-top: 10px; }
+
+        /* Grid for Services */
+        .service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .service-box { text-align: center; padding: 20px 10px; }
+        .service-box h3 { font-size: 16px; color: var(--primary); margin-bottom: 5px; }
+        .service-box span { font-size: 12px; color: var(--text-muted); }
+
+        .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .badge { background: rgba(0, 255, 136, 0.1); color: var(--primary); padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="glass-card">
-        <h1>Axeon Nexus</h1>
-        <p>Premium Ecosystem Operations</p>
-        <button class="btn" onclick="checkAdmin()">Admin Login</button>
+    <div id="loginView" class="container active-view">
+        <div class="box">
+            <h1 style="color: var(--primary);">Axeon VTU</h1>
+            <p>Welcome to Nigeria's Premium Data Platform</p>
+            <input type="text" id="usernameInput" placeholder="Enter Username to Login/Register">
+            <button class="btn" onclick="loginUser()">Access Dashboard</button>
+            <button class="btn btn-outline" onclick="promptAdmin()">Admin Portal</button>
+        </div>
+    </div>
 
-        <div id="adminPanel" class="admin-section">
-            <h2>System Control Panel</h2>
-            <p>Welcome, MDFELIX1. Systems are Nominal.</p>
-            <ul>
-                <li>Server Status: <span style="color: lime;">Active</span></li>
-                <li>Database: <span style="color: lime;">Encrypted</span></li>
-            </ul>
+    <div id="dashboardView" class="container">
+        <div class="header-flex">
+            <div>
+                <h2 id="displayUsername">User</h2>
+                <span class="badge">ID: <span id="displayUserId">------</span></span>
+            </div>
+            <button onclick="logout()" style="background:none; border:none; color:tomato; cursor:pointer;">Logout</button>
+        </div>
+
+        <div class="box">
+            <p style="margin-bottom: 5px;">Wallet Balance</p>
+            <h1 style="font-size: 2.5rem;">₦0.00</h1>
+        </div>
+
+        <div class="box clickable">
+            <h3>Fund Wallet (Deposit)</h3>
+            <p>Transfer to the account below to fund your wallet automatically.</p>
+            <div style="background: #0d1117; padding: 15px; border-radius: 8px; border: 1px dashed var(--primary);">
+                <p style="margin:0;">Bank: <strong id="userBankName" style="color:white;">---</strong></p>
+                <p style="margin:0;">Account: <strong id="userAccNum" style="color:var(--primary); font-size: 18px;">---</strong></p>
+            </div>
+        </div>
+
+        <div class="service-grid">
+            <div class="box service-box clickable" onclick="alert('Proceeding to buy Data...')">
+                <h3>Buy Data</h3>
+                <span id="mtnPriceLabel">MTN 1GB: ₦---</span><br>
+                <span id="airtelPriceLabel">Airtel 1GB: ₦---</span>
+            </div>
+            <div class="box service-box clickable" onclick="alert('Proceeding to buy Airtime...')">
+                <h3>Buy Airtime</h3>
+                <span id="airtimeDiscountLabel">Discount: --%</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminView" class="container">
+        <div class="header-flex">
+            <h2 style="color: tomato;">Admin Dashboard</h2>
+            <button class="btn btn-outline" style="width: auto; padding: 5px 15px; margin:0;" onclick="logout()">Exit</button>
+        </div>
+
+        <div class="box">
+            <h3>Edit Deposit Bank</h3>
+            <p>Update the bank details users see for deposits.</p>
+            <input type="text" id="adminBankName" placeholder="Bank Name (e.g., OPay)">
+            <input type="number" id="adminAccNum" placeholder="Account Number">
+        </div>
+
+        <div class="box">
+            <h3>Edit Prices (Nigeria Rates)</h3>
+            <p>Set the cost for 1GB of data and Airtime discount.</p>
+            <label style="font-size: 12px; color: var(--primary);">MTN 1GB Price (₦)</label>
+            <input type="number" id="adminMtnPrice" placeholder="e.g. 300">
+            
+            <label style="font-size: 12px; color: var(--primary);">Airtel 1GB Price (₦)</label>
+            <input type="number" id="adminAirtelPrice" placeholder="e.g. 350">
+            
+            <label style="font-size: 12px; color: var(--primary);">Airtime Discount (%)</label>
+            <input type="number" id="adminAirtime" placeholder="e.g. 2">
+            
+            <button class="btn" onclick="saveAdminData()">Save All Changes</button>
         </div>
     </div>
 
     <script>
-        function checkAdmin() {
-            // Hard-coded premium logic
-            let pass = prompt("Enter Admin Access Key:");
-            if(pass === "axeon2026") {
-                document.getElementById('adminPanel').style.display = 'block';
-                alert("Access Granted. Welcome back.");
+        // --- DATA MANAGEMENT (Simulation using LocalStorage) ---
+        // Default prices based on standard Nigeria VTU rates
+        let defaultPlatformData = {
+            bankName: "Moniepoint",
+            accountNumber: "8123456789",
+            mtn1gb: 320,
+            airtel1gb: 350,
+            airtimeDiscount: 2
+        };
+
+        // Load data or set defaults
+        let platformData = JSON.parse(localStorage.getItem('axeonPlatformData')) || defaultPlatformData;
+        let currentUser = JSON.parse(localStorage.getItem('axeonUser')) || null;
+
+        // --- VIEW ROUTING ---
+        function showView(viewId) {
+            document.querySelectorAll('.container').forEach(el => el.classList.remove('active-view'));
+            document.getElementById(viewId).classList.add('active-view');
+        }
+
+        // --- USER LOGIC ---
+        function loginUser() {
+            let username = document.getElementById('usernameInput').value.trim();
+            if(!username) return alert("Please enter a username");
+
+            // Generate unique 6-digit ID if new
+            let userId = Math.floor(100000 + Math.random() * 900000);
+            
+            currentUser = { username: username, id: userId };
+            localStorage.setItem('axeonUser', JSON.stringify(currentUser));
+            
+            loadUserDashboard();
+        }
+
+        function loadUserDashboard() {
+            if(!currentUser) return showView('loginView');
+            
+            // Populate User Info
+            document.getElementById('displayUsername').innerText = "Hi, " + currentUser.username;
+            document.getElementById('displayUserId').innerText = currentUser.id;
+
+            // Populate Platform Data (Bank & Prices)
+            document.getElementById('userBankName').innerText = platformData.bankName;
+            document.getElementById('userAccNum').innerText = platformData.accountNumber;
+            document.getElementById('mtnPriceLabel').innerText = `MTN 1GB: ₦${platformData.mtn1gb}`;
+            document.getElementById('airtelPriceLabel').innerText = `Airtel 1GB: ₦${platformData.airtel1gb}`;
+            document.getElementById('airtimeDiscountLabel').innerText = `Discount: ${platformData.airtimeDiscount}%`;
+
+            showView('dashboardView');
+        }
+
+        function logout() {
+            localStorage.removeItem('axeonUser');
+            currentUser = null;
+            showView('loginView');
+        }
+
+        // --- ADMIN LOGIC ---
+        function promptAdmin() {
+            let pass = prompt("Enter Admin Password:");
+            if(pass === "aA123##q") {
+                loadAdminDashboard();
             } else {
-                alert("Access Denied.");
+                alert("Incorrect Password!");
             }
+        }
+
+        function loadAdminDashboard() {
+            // Fill inputs with current data
+            document.getElementById('adminBankName').value = platformData.bankName;
+            document.getElementById('adminAccNum').value = platformData.accountNumber;
+            document.getElementById('adminMtnPrice').value = platformData.mtn1gb;
+            document.getElementById('adminAirtelPrice').value = platformData.airtel1gb;
+            document.getElementById('adminAirtime').value = platformData.airtimeDiscount;
+
+            showView('adminView');
+        }
+
+        function saveAdminData() {
+            platformData.bankName = document.getElementById('adminBankName').value || platformData.bankName;
+            platformData.accountNumber = document.getElementById('adminAccNum').value || platformData.accountNumber;
+            platformData.mtn1gb = document.getElementById('adminMtnPrice').value || platformData.mtn1gb;
+            platformData.airtel1gb = document.getElementById('adminAirtelPrice').value || platformData.airtel1gb;
+            platformData.airtimeDiscount = document.getElementById('adminAirtime').value || platformData.airtimeDiscount;
+
+            // Save to memory so it updates instantly
+            localStorage.setItem('axeonPlatformData', JSON.stringify(platformData));
+            alert("Platform updated successfully!");
+        }
+
+        // --- INITIALIZATION ---
+        // Auto-login if user exists in memory
+        if(currentUser) {
+            loadUserDashboard();
         }
     </script>
 </body>
