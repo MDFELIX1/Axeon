@@ -3,36 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOUR_NEW_NAME | Future of Investment</title>
+    <title>Axeon Nexus | Premium Portal</title>
     <style>
-        body { background-color: #0a0a0a; color: #ffffff; font-family: 'Courier New', monospace; text-align: center; padding: 50px; }
-        .logo { font-size: 3rem; font-weight: bold; color: #00ffcc; letter-spacing: 4px; text-shadow: 0 0 10px #00ffcc; }
-        .tagline { font-size: 1rem; color: #888; margin-top: 10px; text-transform: uppercase; }
-        .tracker-box { margin: 40px auto; padding: 20px; border: 1px solid #333; width: 300px; border-radius: 10px; background: #111; }
-        .counter { font-size: 2rem; color: #00ffcc; font-weight: bold; }
-        .label { color: #555; font-size: 0.8rem; margin-top: 5px; }
-        .btn { border: 1px solid #00ffcc; color: #00ffcc; padding: 12px 25px; text-decoration: none; border-radius: 2px; font-weight: bold; transition: 0.3s; }
-        .btn:hover { background: #00ffcc; color: #000; }
+        :root {
+            --primary: #00f2ff; /* Cyber Blue */
+            --bg: #0a0b10;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+        body {
+            background: var(--bg);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 50px;
+            width: 80%;
+            max-width: 800px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+        h1 { font-size: 3rem; letter-spacing: 5px; color: var(--primary); text-transform: uppercase; }
+        .admin-section {
+            margin-top: 50px;
+            border-top: 1px dashed var(--primary);
+            padding-top: 20px;
+            display: none; /* Hidden by default */
+        }
+        .btn {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 10px 25px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn:hover { background: var(--primary); color: black; }
     </style>
 </head>
 <body>
-    <div class="logo">YOUR_NEW_NAME</div>
-    <p class="tagline">Global Asset Management Infrastructure</p>
-    
-    <div class="tracker-box">
-        <div class="counter" id="growth">$1,000,000.00</div>
-        <div class="label">TOTAL ASSETS SECURED</div>
+
+    <div class="glass-card">
+        <h1>Axeon Nexus</h1>
+        <p>Premium Ecosystem Operations</p>
+        <button class="btn" onclick="checkAdmin()">Admin Login</button>
+
+        <div id="adminPanel" class="admin-section">
+            <h2>System Control Panel</h2>
+            <p>Welcome, MDFELIX1. Systems are Nominal.</p>
+            <ul>
+                <li>Server Status: <span style="color: lime;">Active</span></li>
+                <li>Database: <span style="color: lime;">Encrypted</span></li>
+            </ul>
+        </div>
     </div>
 
-    <br><br>
-    <a href="#" class="btn">ENTER TERMINAL</a>
-
     <script>
-        let value = 1000000.00;
-        setInterval(() => {
-            value += Math.random() * 1.5;
-            document.getElementById('growth').innerText = '$' + value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        }, 2000);
+        function checkAdmin() {
+            // Hard-coded premium logic
+            let pass = prompt("Enter Admin Access Key:");
+            if(pass === "axeon2026") {
+                document.getElementById('adminPanel').style.display = 'block';
+                alert("Access Granted. Welcome back.");
+            } else {
+                alert("Access Denied.");
+            }
+        }
     </script>
 </body>
 </html>
